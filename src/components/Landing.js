@@ -2,26 +2,59 @@ import React from "react";
 import restaurants from "../sample-restaurants";
 
 class Landing extends React.Component {
+  state = {
+    display: false,
+    title: "",
+    url: "",
+  };
+
+  displayList = () => {
+    const { display } = this.state;
+    this.setState({ display: !display });
+  };
+
+  getTitle = restaurant => {
+    const {title, url} = restaurant
+    this.setState({title, url, display: false})
+  }
+
+  goToRestaraunt = () => {
+    this.props.history.push(`/restaurant:${this.state.url}`)
+  }
+
   render() {
     return (
       <div className="restaurant_select">
         <div className="restaurant_select_top">
-          <div className="restaurant_select_top-header">Выберите ресторан</div>
+          <div
+            onClick={this.displayList}
+            className="restaurant_select_top-header font-effect-outline"
+          >
+            Выберите ресторан
+          </div>
           <div className="arrow_picker">
             <div className="arrow_picker-up"></div>
             <div className="arrow_picker-down"></div>
           </div>
         </div>
 
-        <div className="restaurant_select_bottom">
+        {this.state.display ? <div className="restaurant_select_bottom">
           <ul>
             {restaurants.map((r) => (
-              <li key={r.id}>{r.title}</li>
+              <li 
+              key={r.id}
+              onClick={() => this.getTitle(r)}F
+              >
+                {r.title}
+                </li>
             ))}
           </ul>
-        </div>
-
-        <button>Перейти в ресторан</button>
+        </div> : ''}
+        
+        {this.state.title && !this.state.display ?
+          (<button onClick={this.goToRestaraunt}>Перейти в ресторан</button>)
+          : null
+        }
       </div>
     );
   }
