@@ -10,7 +10,15 @@ export default class AddBurgerForm extends Component {
     
     createBurger = (e) => {
         e.preventDefault()
-        console.log(this.nameRef.current.value)
+        const burger = {
+            name: this.nameRef.current.value,
+            price: parseFloat(this.priceRef.current.value),
+            status: this.statusRef.current.value,
+            desc: this.descRef.current.value,
+            image: this.imageRef.current.value,
+        }
+        this.props.addBurger(burger)
+        e.currentTarget.reset()
     }
 
     render() {
