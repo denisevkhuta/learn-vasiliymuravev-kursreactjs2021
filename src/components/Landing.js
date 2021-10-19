@@ -43,7 +43,7 @@ class Landing extends React.Component {
             {restaurants.map((r) => (
               <li 
               key={r.id}
-              onClick={() => this.getTitle(r)}F
+              onClick={() => this.getTitle(r)}
               >
                 {r.title}
                 </li>
