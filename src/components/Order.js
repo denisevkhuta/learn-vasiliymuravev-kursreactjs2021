@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Shipment from './Shipment'
 
 export default class Order extends Component {
 
@@ -49,13 +50,16 @@ export default class Order extends Component {
                 <ul className="order">
                     {orderIds.map(this.renderOrder)}
                 </ul>
-                <div className="total">
-                    <div className="total_wrap">
-                        <div className="total_wrap-final">
-                            Итого: {total} руб.
+
+                {
+                    total > 0 ?  (
+                        <Shipment total={total} />
+                    ) : (
+                        <div className="nothingSelected">
+                            Выберите блюда и добавтье к заказу
                         </div>
-                    </div>
-                </div>
+                    )
+                }
             </div>
         )
     }

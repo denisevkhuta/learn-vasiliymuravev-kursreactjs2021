@@ -4,6 +4,7 @@ import MenuAdmin from './MenuAdmin'
 import Order from './Order'
 import Burger from './Burger'
 import sampleBurgers from '../sample-burgers'
+import base from '../base'
 
 class App extends React.Component {
 
@@ -11,6 +12,30 @@ class App extends React.Component {
         burgers: {},
         order: {},
     }
+
+    componentDidMount() {
+        const { params } = this.props.match
+
+        const localStorageRef = localStorage.getItem(params.restaurantId)
+        if (localStorageRef) {
+            this.setState({ order: JSON.parse(localStorageRef) })
+        }
+
+        this.ref = base.syncState(`${params.restaurantId}/burgers`, {
+            context: this,
+            state: 'burgers'
+        })
+    }
+
+    componentDidUpdate() {
+        const { params } = this.props.match
+        console.log(params)
+        localStorage.setItem(params.restaurantId, JSON.stringify(this.state.order))
+    }
+
+    // componentWillMount() {
+    //     base.removeBinding(this.ref)
+    // }
 
     addBurger = (burger) => {
         console.log('addBurger', burger)
@@ -26,9 +51,9 @@ class App extends React.Component {
     }
 
     addToOrder = (key) => {
-        const order = {...this.state.order}
+        const order = { ...this.state.order }
         order[key] = order[key] + 1 || 1
-        this.setState({order})
+        this.setState({ order })
     }
 
     render() {
@@ -39,11 +64,11 @@ class App extends React.Component {
                     <ul className="burgers">
                         {Object.keys(this.state.burgers).map(
                             burger =>
-                                <Burger 
-                                key={burger}
-                                index={burger}
-                                addToOrder={this.addToOrder}
-                                details={this.state.burgers[burger]}
+                                <Burger
+                                    key={burger}
+                                    index={burger}
+                                    addToOrder={this.addToOrder}
+                                    details={this.state.burgers[burger]}
                                 />
                         )}
                     </ul>
